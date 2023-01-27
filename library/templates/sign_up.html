@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign up</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<style>
+    .sign_up .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap:1.5rem;
+}
+
+.sign_up .box-container .box{
+    padding:3rem 2rem;
+    background: #fff;
+    outline: var(--outline);
+    outline-offset: -1rem;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+}
+
+.sign_up .box-container .box:hover{
+    outline: var(--outline-hover);
+    outline-offset: 0rem;
+}
+</style>
+<body>
+    <header class="header">
+
+        <a href="#" class="logo"> <i class="fas fa-shopping-basket"></i> groco </a>    
+        <form action="" class="login-form" method="post" enctype="multipart/form-data">
+            <h3>login now</h3>
+            {% csrf_token %}
+            <input type="email" placeholder="your email" class="box">
+            <input type="password" placeholder="your password" class="box">
+            <p>don't have an account <a href="{% url 'sign_up' %}">create now</a></p>
+            <input type="submit" value="login now" class="btn">
+        </form>
+        <h1>sign up</h1>
+    </header>
+    <br><br>
+    <br><br><br>
+<section class="sign_up">
+    <div class="box-container">
+        <div class="box" style="width: 80vh; margin-left: 50vh;">
+            <h1 class="heading"> Sign<span>up</span> </h1>
+            <br>
+            <form action="" class="login-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="email" placeholder="your email"  style="padding: 10px;">
+                <br><br>
+                <input type="password" placeholder="your password"   style="padding: 10px;">
+                <br><br>
+                <input type="submit" value="submit" class="btn">
+            </form>
+        </div>
+
+    </div>
+</section>
+</body>
+</html>

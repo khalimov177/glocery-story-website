@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>project</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- header section starts  -->
+
+    <header class="header">
+
+        <a href="#" class="logo"> <i class="fas fa-shopping-basket"></i> groco </a>
+
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#categories">categories</a>
+            <a href="#features">features</a>
+            <a href="#products">products</a>
+        </nav>
+
+        <div class="icons">
+            <div class="fas fa-bars" id="menu-btn"></div>
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
+        </div>
+
+        <form action="" class="search-form">
+            <input type="search" id="search-box" placeholder="search here..." name="search">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+
+
+        <div class="shopping-cart">
+            {% for item in cart_items %}
+            <div class="box">
+                <a href="{% url 'delete_cart_item' item.pk %}">
+                    <i class="fas fa-trash"></i>
+                </a>
+                <img src="{{ item.product.thumb.url }}" alt="">
+                <div class="content">
+                    <h3>{{ item }}</h3>
+                    <span class="price">{{ item.product.price }}</span>
+                    <span class="quantity">{{ item.quantity }}x : {{ item.total_price }} sum</span>
+                    <p>Totalt: {{total_price}}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="total">{{ total_quantity }} : {{ total_price }} sum</div>
+
+            <a href="{% url 'create_order' %}" class="btn">checkout</a>
+        </div>
+
+        <form action="" class="login-form" method="post" enctype="multipart/form-data">
+            <h3>sign in</h3>
+            {% csrf_token %}
+            <input type="email" placeholder="your email" class="box">
+            <input type="password" placeholder="your password" class="box">
+            <p>don't have an account <a href="{% url 'sign_up' %}">create now</a></p>
+            <input type="submit" value="login now" class="btn">
+        </form>
+
+    </header>
+    <br><br><br><br>
+    <!-- categories section starts  -->
+    <section class="home" id="home">
+
+        <div class="content">
+            <h3>fresh and <span>organic</span> products for your</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam libero nostrum veniam facere tempore
+                nisi.</p>
+            <a href="#products" class="btn">shop now</a>
+        </div>
+
+    </section>
+
+
+    {% if search %}
+
+    <section class="products" id="products">
+
+        <h1 class="heading"> searched <span>product</span> </h1>
+
+        <div class="swiper product-slider">
+
+            <div class="swiper-wrapper">
+                {% for product in products %}
+                <div class="box" style="margin-left: 65vh; padding:30px;">
+                    <img src="{{ product.thumb.url }}" alt="">
+                    <h3>{{ product.title }}</h3>
+                    <div class="price"> {{ product.price }}so'm </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <a href="{% url 'product_list' %}?product={{ product.id }}" class="btn">add to cart</a>
+                </div>
+                {% endfor %}
+            </div>
+
+
+    </section>
+
+    {% else %}
+
+    <section class="categories" id="categories">
+
+        <h1 class="heading"> product <span>categories</span> </h1>
+
+        <div class="box-container">
+            {% for category in categories %}
+            <div class="box">
+                <img src="{{ category.image.url }}" alt="">
+                <h3>{{ category }}</h3>
+                <a href="#products" class="btn"> Shop now </a>
+            </div>
+            {% endfor %}
+
+        </div>
+
+
+    </section>
+
+    <!-- categories section ends -->
+
+    <!-- features section starts  -->
+    <section class="features" id="features">
+
+        <h1 class="heading"> our <span>features</span> </h1>
+
+        <div class="box-container">
+            {% for feature in features %}
+            <div class="box">
+                <img src="{{ feature.image.url }}" alt="">
+                <h3>{{ feature.title }}</h3>
+                <p>{{ feature.description }}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </section>
+    <!-- features section ends -->
+
+    <!-- products section starts  -->
+
+    <section class="products" id="products">
+
+        <h1 class="heading"> our <span>products</span> </h1>
+
+        <div class="swiper product-slider">
+
+            <div class="swiper-wrapper">
+                {% for product in products%}
+                <a href="{% url 'product_detail' product.pk %}">
+                    <div class="swiper-slide box">
+                        <img src="{{ product.thumb.url }}" alt="">
+                        <h3>{{ product.title }}</h3>
+                        <div class="price"> {{ product.price }}so'm </div>
+                        <div class="stars">
+                            <h2><i class="fas fa-eye"></i> {{ product.view_set.count }}</h2>
+                        </div>
+                        <a href="{% url 'product_list' %}?product={{ product.id }}" class="btn">add to cart</a>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+
+
+    </section>
+    {% endif %}
+    <!-- products section ends -->
+    <!-- footer section starts  -->
+
+    <section class="footer">
+
+        <div class="box-container">
+
+            <div class="box">
+                <h3> groco <i class="fas fa-shopping-basket"></i> </h3>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam, saepe.</p>
+                <div class="share">
+                    <a href="#" class="fab fa-facebook-f"></a>
+                    <a href="#" class="fab fa-twitter"></a>
+                    <a href="https://www.instagram.com/this.shaxa_/" class="fab fa-instagram"></a>
+                    <a href="https://t.me/shaxa0343" class="fab fa-telegram"></a>
+                </div>
+            </div>
+
+            <div class="box">
+                <h3>contact info</h3>
+                <a href="#" class="links"> <i class="fas fa-phone"></i> +998 (93)383-00-42 </a>
+                <a href="#" class="links"> <i class="fas fa-phone"></i> +9989 (88)3006454 </a>
+                <a href="#" class="links"> <i class="fas fa-envelope"></i> shaxriyoribragimov@gmail.com </a>
+                <a href="#" class="links"> <i class="fas fa-map-marker-alt"></i> bukhara, uzbekistan - monday </a>
+            </div>
+
+            <div class="box">
+                <h3>quick links</h3>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i> home </a>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i> features </a>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i> products </a>
+                <a href="#" class="links"> <i class="fas fa-arrow-right"></i> categories </a>
+            </div>
+
+            <div class="box">
+                <h3>newsletter</h3>
+                <p>subscribe for latest updates</p>
+                <input type="email" placeholder="your email" class="email">
+                <input type="submit" value="subscribe" class="btn ">
+                <img src="{% static 'image/payment.png' %}" class="payment-img" alt="">
+            </div>
+
+        </div>
+
+        <div class="credit"> created by <span>django group project4</span> | all rights reserved </div>
+
+    </section>
+
+    <!-- footer section ends -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+    <!-- custom js file link  -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

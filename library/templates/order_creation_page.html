@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>cart item</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css"
+        integrity="sha512-HqxHUkJM0SYcbvxUw5P60SzdOTy/QVwA1JJrvaXJv4q7lmbDZCmZaqz01UPOaQveoxfYRv1tHozWGPMcuTBuvQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .knopka {
+            margin-top: 1rem;
+            display: inline-block;
+            padding: .8rem 3rem;
+            font-size: 1rem;
+            border-radius: .5rem;
+            border: .1rem solid black;
+            color: black;
+            cursor: pointer;
+            background: none;
+        }
+
+        .knopka:hover {
+            background: orange;
+            color: #fff;
+            transition: 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="columns" style="margin-top: 10vh;">
+            <div class="column">
+                <div class="box">
+
+                    <form method="post" action="{% url 'create_order' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="title">
+                            Shopping Information:
+                        </div>
+                        {% for field in form %}
+                        <div class="field">
+                            <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="knopka">Submit</button>
+                    </form>
+
+                </div>
+            </div>
+            <div class="column is-6">
+                <div class="box">
+                    <hr>
+                    <div class="title">Order Summary</div>
+
+                    <table class="table is-fullwidth">
+                        <thead>
+                            <tr class="has-text-weight-bold">
+                                <td></td>
+                                <td>Product</td>
+                                <td>Price</td>
+                                <td>Quantity</td>
+                                <td>Total</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <td>
+                                    <img src="{{ item.product.thumb.url }}" alt="" width="50" height="50">
+                                </td>
+                                <td>{{ item }}</td>
+                                <td>{{ item.product.price }} sum</td>
+                                <td>x {{ item.quantity }}</td>
+                                <td>{{ item.total_price }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
